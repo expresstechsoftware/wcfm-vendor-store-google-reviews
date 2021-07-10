@@ -173,8 +173,35 @@ class Wcfm_Vendor_Store_Google_Reviews {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+		$this->loader->add_action( 'init', $plugin_public, 'public_init' );
+
+
+		$this->loader->add_filter( 'wcfmmp_store_tabs', $plugin_public, 'add_store_google_review_tab' );
+		
+		$this->loader->add_filter( 'wcfmp_store_tabs_url', $plugin_public, 'store_google_review_tab_url', 10, 2);
+
+		$this->loader->add_action( 'wcfmmp_rewrite_rules_loaded', $plugin_public, 'new_register_rule2', 8 );
+
+
+		$this->loader->add_filter( 'wcfmp_store_default_query_vars', $plugin_public, 'wcfm_store_events_default_query_var2');
+
+		$this->loader->add_filter( 'wcfmmp_store_default_template', $plugin_public, 'wcfmmp_store_google_review_template',10,2);
+
+
+		$this->loader->add_filter( 'wcfm_marketplace_settings_fields_address', $plugin_public, 'wcfm_settings_place_id',10,2);
+
+		$this->loader->add_action( 'wcfm_form_custom_validation', $plugin_public, 'place_id_save', 8 );
+
+
+
+		add_shortcode( 'google-reviews', array($this, 'google_review_page_html'));
+
 	}
 
+	public function google_review_page_html()
+	{
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/partials/wcfm-vendor-store-google-reviews-public-display.php';
+	}
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *

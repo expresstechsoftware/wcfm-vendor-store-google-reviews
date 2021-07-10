@@ -2,3 +2,31 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+.wcfm-star-checked {
+  color: orange;
+}
+.wcfm-store-gr-adr{
+	font-size: 14px;
+}
+.wcfm-g-review-card{
+	display: flex;
+	margin-bottom: 10px;
+}
+.wcfm-g-review-des{
+	margin-left: 20px;
+	padding:10px;
+}
+.wcfm-g-review-star-rate-wrap{
+	display: flex;
+}
+.wcfm-g-r-rtv-time-des{
+	margin-left: 10px;
+}
+.wcfm-photo-usr{
+	object-fit: contain;
+}
+.wcfm-g-review-des p, .wcfm-g-r-rtv-time-des span{
+	font-size: 15px;
+	font-family: initial;
+}

@@ -75,6 +75,10 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wcfm-vendor-store-google-reviews-public.css', array(), $this->version, 'all' );
 
+		wp_enqueue_style( $this->plugin_name."font-awesome", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css", array(), $this->version, 'all' );
+
+		
+
 	}
 
 	/**
@@ -98,6 +102,95 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wcfm-vendor-store-google-reviews-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	public function public_init()
+	{	
+		global $WCFM, $WCFMmp,$WCFMu;
+		$wcfm_store_url = get_option( 'wcfm_store_url', 'store' ); 
+		add_rewrite_endpoint( 'google_reviews', EP_ROOT | EP_PAGES ); 
+		 
+	}
+
+	public function add_store_google_review_tab($tabs)
+	{ 
+		$tabs['google_reviews'] = "Google Reviews";
+		return $tabs;
+	}
+
+	public function store_google_review_tab_url($store_tab_url, $tab)
+	{ 
+		global $WCFMmp;
+
+		//wcfmmp_get_store_url
+		if ($tab == "google_reviews") {
+			$store_tab_url = $store_tab_url.'google_reviews';		
+		}
+
+		return $store_tab_url;
+	}
+ 
+	public function wcfm_store_events_default_query_var2( $query_var ) {
+	 	global $WCFM, $WCFMmp;
+	  
+	  	if ( get_query_var( 'google_reviews' ) ) {
+	    	$query_var = 'google_reviews';
+	  	}
+	  	return $query_var;
+	}
+
+
+	
+	public function new_register_rule2($wcfm_store_url) {
+		global $WCFM, $WCFMmp;
+		
+		add_rewrite_rule( $wcfm_store_url.'/([^/]+)/'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'?$', 'index.php?post_type=post&'.$wcfm_store_url.'=$matches[1]&'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'=true', 'top' );
+		add_rewrite_rule( $wcfm_store_url.'/([^/]+)/'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'/page/?([0-9]{1,})/?$', 'index.php?post_type=post&'.$wcfm_store_url.'=$matches[1]&paged=$matches[2]&'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'=true', 'top' );
+	}
+
+
+	public function wcfmmp_store_google_review_template($url, $store_tab)
+	{ 
+		if($store_tab == "google_reviews"){
+			$url = 'store/wcfmmp-view-store-google_reviews.php';	
+		}
+		return $url;
+	}
+
+
+	public function wcfm_settings_place_id($wcfm_settings_fields,$vendor_id)
+	{
+		global $WCFM, $WCFMmp,$WCFMu;
+		
+		$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
+		$WCFM->wcfm_fields->wcfm_generate_form_field(
+			array( 
+				"wcfm_google_review_place_id" => array( 
+					'label' => __( 'Place ID ', 'wc_lottery' ) ,
+					'type'  => 'text',
+					'class' => 'wcfm-text wcfm_ele place_id_field',
+					'label_class' => 'wcfm_title place_id_field',
+					'value' => $place_id 
+				)
+			)
+		); 
+		 
+		return $wcfm_settings_fields;
+	}
+
+
+
+	public function place_id_save($form_field_data)
+	{
+		if (wcfm_is_vendor()) {
+			$user_id = get_current_user_id();
+		} else {
+			$user_id = absint($form_field_data['vendor_id']);
+		}
+		$place_id = isset($form_field_data['wcfm_google_review_place_id']) ? $form_field_data['wcfm_google_review_place_id'] : '';
+		$place_id = sanitize_text_field(trim($place_id));
+		 
+		update_user_meta($user_id, 'wcfm_google_review_place_id', $place_id);
 	}
 
 }
