@@ -17,30 +17,50 @@
 <?php
 global $WCFM, $WCFMmp,$WCFMu;
 
-$place_id = 'ChIJh28tb8z9YjkRBG_q9uO1RZY';
+$place_id = $newReviewDetail = '';
+$wcfm_store_url    = wcfm_get_option( 'wcfm_store_url', 'store' );
+$wcfm_store_name   = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
+
+if ( empty( $wcfm_store_name ) ) return;
+
+$seller_info       = get_user_by( 'slug', $wcfm_store_name );
+
+if( !$seller_info ) return;
+
+$store_user        = wcfmmp_get_store( $seller_info->ID );
+
+$store_id = isset($store_user->id) ? $store_user->id : '';
+$lang = 'en';
+if($store_id) {
+	$place_id = get_user_meta($store_id, 'wcfm_google_review_place_id', true);
+	$lang = get_user_meta($store_id, 'wcfm_google_review_lang', true);
+}
 
 // Get Google Api Key
 $wcfm_marketplace_options = wcfm_get_option( 'wcfm_marketplace_options', array() );
 $apiKey = isset( $wcfm_marketplace_options['wcfm_google_map_api'] ) ? $wcfm_marketplace_options['wcfm_google_map_api'] : '';
+ 
 
+if($place_id) {
+	// Google MAp  Api call.
+	$newUrl = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$apiKey.'&placeid='.$place_id.'&language='.$lang;	 
 
-// Google MAp  Api call.
-$newUrl = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$apiKey.'&placeid='.$place_id;	 
+	$newReview = file_get_contents($newUrl);
+	$newReviewDetail = json_decode($newReview);
 
-$newReview = file_get_contents($newUrl);
-$newReviewDetail = json_decode($newReview);
+	// Get Store name
+	$storeName = isset($newReviewDetail->result->name) ? $newReviewDetail->result->name : 'Google Reviews';
 
-// Get Store name
-$storeName = isset($newReviewDetail->result->name) ? $newReviewDetail->result->name : 'Google Reviews';
+	// Get Store address
+	$address = '';
+	$adr_address = isset($newReviewDetail->result->adr_address) ? $newReviewDetail->result->adr_address : '';
 
-// Get Store address
-$address = '';
-$adr_address = isset($newReviewDetail->result->adr_address) ? $newReviewDetail->result->adr_address : '';
+	if(!$adr_address) {
+		$adr_address = isset($newReviewDetail->result->formatted_address) ? $newReviewDetail->result->formatted_address : '';
+	} 
+	$address = $adr_address;
 
-if(!$adr_address) {
-	$adr_address = isset($newReviewDetail->result->formatted_address) ? $newReviewDetail->result->formatted_address : '';
-} 
-$address = $adr_address;
+}
 
 ?>
 <div class="wcfm-store-gr-wraper">
@@ -98,6 +118,8 @@ $address = $adr_address;
 		} ?>
 		</div>
 		<?php
+	} else {
+		echo "<br>No Record Found...";
 	}
 
 	?>

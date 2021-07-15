@@ -188,9 +188,14 @@ class Wcfm_Vendor_Store_Google_Reviews {
 		$this->loader->add_filter( 'wcfmmp_store_default_template', $plugin_public, 'wcfmmp_store_google_review_template',10,2);
 
 
-		$this->loader->add_filter( 'wcfm_marketplace_settings_fields_address', $plugin_public, 'wcfm_settings_place_id',10,2);
+		 
 
 		$this->loader->add_action( 'wcfm_form_custom_validation', $plugin_public, 'place_id_save', 8 );
+
+
+		$this->loader->add_action( 'wcfm_vendor_settings_after_location', $plugin_public, 'gmb_eviews_setting', 8 );
+
+		$this->loader->add_action( 'wcfmmp_admin_wcfm_store_general_settings_after', $plugin_public, 'admin_gmb_eviews_setting', 8 );
 
 
 

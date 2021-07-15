@@ -152,32 +152,106 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 	public function wcfmmp_store_google_review_template($url, $store_tab)
 	{ 
 		if($store_tab == "google_reviews"){
+			
 			$url = 'store/wcfmmp-view-store-google_reviews.php';	
 		}
 		return $url;
 	}
 
 
-	public function wcfm_settings_place_id($wcfm_settings_fields,$vendor_id)
+	public function gmb_eviews_setting($vendor_id)
 	{
 		global $WCFM, $WCFMmp,$WCFMu;
-		
-		$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
-		$WCFM->wcfm_fields->wcfm_generate_form_field(
-			array( 
-				"wcfm_google_review_place_id" => array( 
-					'label' => __( 'Place ID ', 'wc_lottery' ) ,
-					'type'  => 'text',
-					'class' => 'wcfm-text wcfm_ele place_id_field',
-					'label_class' => 'wcfm_title place_id_field',
-					'value' => $place_id 
-				)
-			)
-		); 
-		 
-		return $wcfm_settings_fields;
+
+		?>
+		<div class="page_collapsible" id="wcfm_settings_location_head">
+			<label class="wcfmfa fa-globe"></label>
+			<?php _e('GMB Reviews', 'wc-frontend-manager'); ?><span></span>
+		</div>
+		<div class="wcfm-container wcfm_marketplace_store_location_settings">
+			<div id="wcfm_settings_form_store_location_expander" class="wcfm-content">
+			
+				<div class="wcfm_clearfix"></div>
+				<div class="wcfm_vendor_settings_heading"><h2><?php _e( 'GMB Listings', 'wc-frontend-manager' ); ?></h2></div>
+				<div class="wcfm_clearfix"></div>
+				<div class="store_address store_address_wrap">
+					<?php
+					$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
+					$lang = get_user_meta($vendor_id, 'wcfm_google_review_lang',true);
+
+					$WCFM->wcfm_fields->wcfm_generate_form_field(
+						array( 
+							"wcfm_google_review_place_id" => array( 
+								'label' => __( 'Place ID ', 'wcfm-vendor-store-google-reviews' ) ,
+								'type'  => 'text',
+								'class' => 'wcfm-text wcfm_ele place_id_field',
+								'label_class' => 'wcfm_title place_id_field',
+								'value' => $place_id 
+							)
+						)
+					);
+					$WCFM->wcfm_fields->wcfm_generate_form_field(
+						array( 
+							"wcfm_google_review_lang" => array( 
+								'label' => __( 'Retrieval Language', 'wcfm-vendor-store-google-reviews' ) ,
+								'type'  => 'text',
+								'class' => 'wcfm-text wcfm_ele lang_field',
+								'label_class' => 'wcfm_title lang_field',
+								'value' => $lang 
+							)
+						)
+					);
+					?>
+
+				</div>
+			</div>
+		</div>
+
+		<?php
 	}
 
+	public function admin_gmb_eviews_setting($vendor_id)
+	{
+		global $WCFM, $WCFMmp,$WCFMu;
+
+		?>
+		<div class="wcfm_clearfix"></div><br />
+			<div class="wcfm_vendor_settings_heading"><h2><?php _e('GMB Reviews', 'wc-frontend-manager'); ?></h2></div>
+			<div class="wcfm_clearfix"></div>
+			
+			<div class="ets store_address store_address_wrap">
+					<?php
+					$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
+					$lang = get_user_meta($vendor_id, 'wcfm_google_review_lang',true);
+
+					$WCFM->wcfm_fields->wcfm_generate_form_field(
+						array( 
+							"wcfm_google_review_place_id" => array( 
+								'label' => __( 'Place ID ', 'wcfm-vendor-store-google-reviews' ) ,
+								'type'  => 'text',
+								'class' => 'wcfm-text wcfm_ele place_id_field',
+								'label_class' => 'wcfm_title place_id_field',
+								'value' => $place_id 
+							)
+						)
+					);
+					$WCFM->wcfm_fields->wcfm_generate_form_field(
+						array( 
+							"wcfm_google_review_lang" => array( 
+								'label' => __( 'Retrieval Language', 'wcfm-vendor-store-google-reviews' ) ,
+								'type'  => 'text',
+								'class' => 'wcfm-text wcfm_ele lang_field',
+								'label_class' => 'wcfm_title lang_field',
+								'value' => $lang 
+							)
+						)
+					);
+					?>
+
+			</div>
+		</div>
+		<?php
+	}
 
 
 	public function place_id_save($form_field_data)
@@ -188,9 +262,14 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 			$user_id = absint($form_field_data['vendor_id']);
 		}
 		$place_id = isset($form_field_data['wcfm_google_review_place_id']) ? $form_field_data['wcfm_google_review_place_id'] : '';
+
+		$lang = isset($form_field_data['wcfm_google_review_lang']) ? $form_field_data['wcfm_google_review_lang'] : '';
+
 		$place_id = sanitize_text_field(trim($place_id));
+		$lang = sanitize_text_field(trim($lang));
 		 
 		update_user_meta($user_id, 'wcfm_google_review_place_id', $place_id);
+		update_user_meta($user_id, 'wcfm_google_review_lang', $lang);
 	}
 
 }
