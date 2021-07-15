@@ -192,10 +192,10 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 					);
 
 					?>
-					
-					<p class="description">You can find your unique Place ID by searching by your business’ name in <a href="https://developers.google.com/places/place-id" class="components-external-link" target="_blank">Google’s Place ID Finder</a>. Single business locations are accepted; coverage areas are not accepted.</p>
 
-					<div class="">
+					<p class="description">You can find your unique Place ID by searching by your business’ name in <a href="https://developers.google.com/places/place-id" class="components-external-link" target="_blank">Google’s Place ID Finder</a>. Single business locations are accepted; coverage areas are not accepted.</p>
+      
+					<div class="wcfm-lang-gr">
 						<p class="wcfm_google_review_lang wcfm_title lang_field"><strong>Retrieval Language</strong></p>
 						<label class="screen-reader-text" for="wcfm_google_review_lang">Retrieval Language</label>
 
