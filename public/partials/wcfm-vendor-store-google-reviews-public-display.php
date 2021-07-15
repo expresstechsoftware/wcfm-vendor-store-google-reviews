@@ -17,7 +17,7 @@
 <?php
 global $WCFM, $WCFMmp,$WCFMu;
 
-$place_id = $newReviewDetail = '';
+$place_id = $newReviewDetail = $api_key = '';
 $wcfm_store_url    = wcfm_get_option( 'wcfm_store_url', 'store' );
 $wcfm_store_name   = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
 
@@ -31,19 +31,19 @@ $store_user        = wcfmmp_get_store( $seller_info->ID );
 
 $store_id = isset($store_user->id) ? $store_user->id : '';
 $lang = 'en';
+
 if($store_id) {
 	$place_id = get_user_meta($store_id, 'wcfm_google_review_place_id', true);
 	$lang = get_user_meta($store_id, 'wcfm_google_review_lang', true);
-}
+	
+	// Get Google Api Key
+	$api_key = get_user_meta($store_id, 'ets_wcfm_gmb_reviews_api_key', true);
 
-// Get Google Api Key
-$wcfm_marketplace_options = wcfm_get_option( 'wcfm_marketplace_options', array() );
-$apiKey = isset( $wcfm_marketplace_options['wcfm_google_map_api'] ) ? $wcfm_marketplace_options['wcfm_google_map_api'] : '';
- 
+}
 
 if($place_id) {
 	// Google MAp  Api call.
-	$newUrl = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$apiKey.'&placeid='.$place_id.'&language='.$lang;	 
+	$newUrl = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$api_key.'&placeid='.$place_id.'&language='.$lang;	 
 
 	$newReview = file_get_contents($newUrl);
 	$newReviewDetail = json_decode($newReview);

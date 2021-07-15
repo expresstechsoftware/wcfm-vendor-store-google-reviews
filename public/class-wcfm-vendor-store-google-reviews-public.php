@@ -162,7 +162,6 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 	public function gmb_eviews_setting($vendor_id)
 	{
 		global $WCFM, $WCFMmp,$WCFMu;
-
 		?>
 		<div class="page_collapsible" id="wcfm_settings_location_head">
 			<label class="wcfmfa fa-globe"></label>
@@ -170,7 +169,6 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		</div>
 		<div class="wcfm-container wcfm_marketplace_store_location_settings">
 			<div id="wcfm_settings_form_store_location_expander" class="wcfm-content">
-			
 				<div class="wcfm_clearfix"></div>
 				<div class="wcfm_vendor_settings_heading"><h2><?php _e( 'GMB Listings', 'wc-frontend-manager' ); ?></h2></div>
 				<div class="wcfm_clearfix"></div>
@@ -179,6 +177,8 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 					$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
 					$lang = get_user_meta($vendor_id, 'wcfm_google_review_lang',true);
 
+					$api_key = get_user_meta($vendor_id, 'ets_wcfm_gmb_reviews_api_key',true);
+
 					$WCFM->wcfm_fields->wcfm_generate_form_field(
 						array( 
 							"wcfm_google_review_place_id" => array( 
@@ -190,19 +190,46 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 							)
 						)
 					);
+
+					?>
+					
+					<p class="description">You can find your unique Place ID by searching by your business’ name in <a href="https://developers.google.com/places/place-id" class="components-external-link" target="_blank">Google’s Place ID Finder</a>. Single business locations are accepted; coverage areas are not accepted.</p>
+
+					<div class="">
+						<p class="wcfm_google_review_lang wcfm_title lang_field"><strong>Retrieval Language</strong></p>
+						<label class="screen-reader-text" for="wcfm_google_review_lang">Retrieval Language</label>
+
+						<select name="wcfm_google_review_lang" class="wcfm-select wcfm_ele lang_field">
+							<?php
+								$languages = Wcfm_Vendor_Store_Google_Reviews_Public::languages();
+								if ($languages) {
+									foreach ($languages as $code => $language) {
+										if($lang == $code) {
+											echo '<option value="'.$code.'" selected>'.$language.'</option>';
+										} else {
+											echo '<option value="'.$code.'">'.$language.'</option>';
+										}
+									}
+								}
+							?>
+						</select>
+					</div>
+					<?php
+
+					var_dump();
+
 					$WCFM->wcfm_fields->wcfm_generate_form_field(
 						array( 
-							"wcfm_google_review_lang" => array( 
-								'label' => __( 'Retrieval Language', 'wcfm-vendor-store-google-reviews' ) ,
+							"ets_wcfm_gmb_reviews_api_key" => array( 
+								'label' => __( 'Google Api Key', 'wcfm-vendor-store-google-reviews' ) ,
 								'type'  => 'text',
 								'class' => 'wcfm-text wcfm_ele lang_field',
 								'label_class' => 'wcfm_title lang_field',
-								'value' => $lang 
+								'value' => $api_key 
 							)
 						)
 					);
 					?>
-
 				</div>
 			</div>
 		</div>
@@ -210,48 +237,7 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		<?php
 	}
 
-	public function admin_gmb_eviews_setting($vendor_id)
-	{
-		global $WCFM, $WCFMmp,$WCFMu;
-
-		?>
-		<div class="wcfm_clearfix"></div><br />
-			<div class="wcfm_vendor_settings_heading"><h2><?php _e('GMB Reviews', 'wc-frontend-manager'); ?></h2></div>
-			<div class="wcfm_clearfix"></div>
-			
-			<div class="ets store_address store_address_wrap">
-					<?php
-					$place_id = get_user_meta($vendor_id, 'wcfm_google_review_place_id',true);
-					$lang = get_user_meta($vendor_id, 'wcfm_google_review_lang',true);
-
-					$WCFM->wcfm_fields->wcfm_generate_form_field(
-						array( 
-							"wcfm_google_review_place_id" => array( 
-								'label' => __( 'Place ID ', 'wcfm-vendor-store-google-reviews' ) ,
-								'type'  => 'text',
-								'class' => 'wcfm-text wcfm_ele place_id_field',
-								'label_class' => 'wcfm_title place_id_field',
-								'value' => $place_id 
-							)
-						)
-					);
-					$WCFM->wcfm_fields->wcfm_generate_form_field(
-						array( 
-							"wcfm_google_review_lang" => array( 
-								'label' => __( 'Retrieval Language', 'wcfm-vendor-store-google-reviews' ) ,
-								'type'  => 'text',
-								'class' => 'wcfm-text wcfm_ele lang_field',
-								'label_class' => 'wcfm_title lang_field',
-								'value' => $lang 
-							)
-						)
-					);
-					?>
-
-			</div>
-		</div>
-		<?php
-	}
+	
 
 
 	public function place_id_save($form_field_data)
@@ -265,11 +251,101 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 		$lang = isset($form_field_data['wcfm_google_review_lang']) ? $form_field_data['wcfm_google_review_lang'] : '';
 
+		$api_key = isset($form_field_data['ets_wcfm_gmb_reviews_api_key']) ? $form_field_data['ets_wcfm_gmb_reviews_api_key'] : '';
+
 		$place_id = sanitize_text_field(trim($place_id));
 		$lang = sanitize_text_field(trim($lang));
 		 
 		update_user_meta($user_id, 'wcfm_google_review_place_id', $place_id);
 		update_user_meta($user_id, 'wcfm_google_review_lang', $lang);
+		update_user_meta($user_id, 'ets_wcfm_gmb_reviews_api_key', $api_key);
+	}
+
+	protected function languages()
+	{
+		return array(
+			'af' => 'Afrikaans',
+			'sq' => 'Albanian',
+			'am' => 'Amharic',
+			'ar' => 'Arabic',
+			'hy' => 'Armenian',
+			'az' => 'Azerbaijani',
+			'eu' => 'Basque',
+			'be' => 'Belarusian',
+			'bn' => 'Bengali',
+			'bs' => 'Bosnian',
+			'bg' => 'Bulgarian',
+			'my' => 'Burmese',
+			'ca' => 'Catalan',
+			'zh' => 'Chinese',
+			'zh-CN' => 'Chinese (Simplified)',
+			'zh-HK' => 'Chinese (Hong Kong)',
+			'zh-TW' => 'Chinese (Traditional)',
+			'hr' => 'Croatian',
+			'cs' => 'Czech',
+			'da' => 'Danish',
+			'nl' => 'Dutch',
+			'en' => 'English',
+			'en-AU' => 'English (Australian)',
+			'en-GB' => 'English (Great Britain)',
+			'et' => 'Estonian',
+			'fa' => 'Farsi',
+			'fi' => 'Finnish',
+			'fil' => 'Filipino',
+			'fr' => 'French',
+			'fr-CA' => 'French (Canada)',
+			'gl' => 'Galician',
+			'ka' => 'Georgian',
+			'de' => 'German',
+			'el' => 'Greek',
+			'gu' => 'Gujarati',
+			'iw' => 'Hebrew',
+			'hi' => 'Hindi',
+			'hu' => 'Hungarian',
+			'is' => 'Icelandic',
+			'id' => 'Indonesian',
+			'it' => 'Italian',
+			'ja' => 'Japanese',
+			'kn' => 'Kannada',
+			'kk' => 'Kazakh',
+			'km' => 'Khmer',
+			'ko' => 'Korean',
+			'ky' => 'Kyrgyz',
+			'lo' => 'Lao',
+			'lv' => 'Latvian',
+			'lt' => 'Lithuanian',
+			'mk' => 'Macedonian',
+			'ms' => 'Malay',
+			'ml' => 'Malayalam',
+			'mr' => 'Marathi',
+			'mn' => 'Mongolian',
+			'ne' => 'Nepali',
+			'no' => 'Norwegian',
+			'pl' => 'Polish',
+			'pt' => 'Portuguese',
+			'pt-BR' => 'Portuguese (Brazil)',
+			'pt-PT' => 'Portuguese (Portugal)',
+			'pa' => 'Punjabi',
+			'ro' => 'Romanian',
+			'ru' => 'Russian',
+			'sr' => 'Serbian',
+			'si' => 'Sinhalese',
+			'sk' => 'Slovak',
+			'sl' => 'Slovenian',
+			'es' => 'Spanish',
+			'es-419' => 'Spanish (Latin America)',
+			'sw' => 'Swahili',
+			'sv' => 'Swedish',
+			'ta' => 'Tamil',
+			'te' => 'Telugu',
+			'th' => 'Thai',
+			'tr' => 'Turkish',
+			'uk' => 'Ukrainian',
+			'ur' => 'Urdu',
+			'uz' => 'Uzbek',
+			'vi' => 'Vietnamese',
+			'zu' => 'Zulu'
+		);
 	}
 
 }
