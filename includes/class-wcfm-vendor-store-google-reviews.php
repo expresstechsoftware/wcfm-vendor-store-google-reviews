@@ -190,7 +190,7 @@ class Wcfm_Vendor_Store_Google_Reviews {
 		$this->loader->add_action( 'wcfm_form_custom_validation', $plugin_public, 'place_id_save', 8 );
 
 
-		$this->loader->add_action( 'wcfm_vendor_settings_after_location', $plugin_public, 'gmb_eviews_setting', 8 );
+		$this->loader->add_action( 'wcfm_vendor_settings_after_location', $plugin_public, 'gmb_reviews_setting', 8 );
 
 		
 		add_shortcode( 'google-reviews', array($this, 'google_review_page_html'));

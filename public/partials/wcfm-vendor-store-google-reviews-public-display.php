@@ -17,7 +17,7 @@
 <?php
 global $WCFM, $WCFMmp,$WCFMu;
 
-$place_id = $newReviewDetail = $api_key = '';
+$place_id = $new_review_detail = $api_key = '';
 $wcfm_store_url    = wcfm_get_option( 'wcfm_store_url', 'store' );
 $wcfm_store_name   = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
 
@@ -43,32 +43,30 @@ if($store_id) {
 
 if($place_id) {
 	// Google MAp  Api call.
-	$newUrl = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$api_key.'&placeid='.$place_id.'&language='.$lang;	 
+	$url = 'https://maps.googleapis.com/maps/api/place/details/json?key='.$api_key.'&placeid='.$place_id.'&language='.$lang;	 
 
-	$newReview = file_get_contents($newUrl);
-	$newReviewDetail = json_decode($newReview);
+	$new_review = file_get_contents($url);
+	$new_review_detail = json_decode($new_review);
 
 	// Get Store name
-	$storeName = isset($newReviewDetail->result->name) ? $newReviewDetail->result->name : 'Google Reviews';
+	$store_name = isset($new_review_detail->result->name) ? $new_review_detail->result->name : __('Google Reviews', "wcfm-vendor-store-google-reviews");
 
 	// Get Store address
-	$address = '';
-	$adr_address = isset($newReviewDetail->result->adr_address) ? $newReviewDetail->result->adr_address : '';
+	$address = isset($new_review_detail->result->adr_address) ? $new_review_detail->result->adr_address : '';
 
-	if(!$adr_address) {
-		$adr_address = isset($newReviewDetail->result->formatted_address) ? $newReviewDetail->result->formatted_address : '';
-	} 
-	$address = $adr_address;
+	if(!$address) {
+		$address = isset($new_review_detail->result->formatted_address) ? $new_review_detail->result->formatted_address : '';
+	}
 
 }
 
 ?>
 <div class="wcfm-store-gr-wraper">
-	<h2><?php echo $storeName; ?></h2>
+	<h2><?php echo $store_name; ?></h2>
 	<span class="wcfm-store-gr-adr"><?php echo $address; ?></span>
 	<?php 
-	if(isset($newReviewDetail->result->reviews) && $newReviewDetail->result->reviews) {
-		$reviews = $newReviewDetail->result->reviews;
+	if(isset($new_review_detail->result->reviews) && $new_review_detail->result->reviews) {
+		$reviews = $new_review_detail->result->reviews;
 		?>
 		<div class="wcfm-google-review-list"> <?php
 		foreach ($reviews as $key => $review) {
@@ -119,7 +117,8 @@ if($place_id) {
 		</div>
 		<?php
 	} else {
-		echo "<br>No Record Found...";
+		echo "<br>";
+		echo __("No Record Found","wcfm-vendor-store-google-reviews");
 	}
 
 	?>

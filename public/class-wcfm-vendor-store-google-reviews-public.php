@@ -104,6 +104,11 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 	}
 
+	/**
+	 * Method run when reload the site.
+	 *
+	 * @since    1.0.0
+	 */
 	public function public_init()
 	{	
 		global $WCFM, $WCFMmp,$WCFMu;
@@ -112,12 +117,28 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		 
 	}
 
+	/**
+	 * Initialized new tab on frontend store page .
+	 *
+	 * @since    1.0.0
+	 * @param    array    $tabs       tab name array.
+	 * @return 	 array    $tabs  	  Add google_reviews val and return.
+	 */
 	public function add_store_google_review_tab($tabs)
 	{ 
 		$tabs['google_reviews'] = "Google Reviews";
 		return $tabs;
 	}
 
+
+	/**
+	 * Set url in Google Reviews tab in frontend Stor page.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $store_tab_url     Store tab url.
+	 * @param      string    $tab    			Tab name.
+	 * @return     string 	 $store_tab_url 	New tab url 
+	 */
 	public function store_google_review_tab_url($store_tab_url, $tab)
 	{ 
 		global $WCFMmp;
@@ -129,7 +150,14 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 		return $store_tab_url;
 	}
- 
+ 	
+ 	/**
+	 * Set new query variable on store page.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $query_var    		query_var.
+	 * @return     string 	 $query_var 		set new query variable
+	 */
 	public function wcfm_store_events_default_query_var2( $query_var ) {
 	 	global $WCFM, $WCFMmp;
 	  
@@ -139,8 +167,12 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 	  	return $query_var;
 	}
 
-
-	
+	/**
+	 * Add new register rule2 on store page.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $wcfm_store_url    		store url.
+	 */
 	public function new_register_rule2($wcfm_store_url) {
 		global $WCFM, $WCFMmp;
 		
@@ -148,7 +180,14 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		add_rewrite_rule( $wcfm_store_url.'/([^/]+)/'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'/page/?([0-9]{1,})/?$', 'index.php?post_type=post&'.$wcfm_store_url.'=$matches[1]&paged=$matches[2]&'.$WCFMmp->wcfmmp_rewrite->store_endpoint('google_reviews').'=true', 'top' );
 	}
 
-
+	/**
+	 * This method is set template Url.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $url    			template url.
+	 * @param      string    $store_tab    		tab slug.
+	 * @return     string 	 $url 				google reviews template url
+	 */
 	public function wcfmmp_store_google_review_template($url, $store_tab)
 	{ 
 		if($store_tab == "google_reviews"){
@@ -158,19 +197,24 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		return $url;
 	}
 
-
-	public function gmb_eviews_setting($vendor_id)
+	/**
+	 * This method is set reviews setting.
+	 *
+	 * @since    1.0.0
+	 * @param      string    $vendor_id    		store id.
+	*/
+	public function gmb_reviews_setting($vendor_id)
 	{
 		global $WCFM, $WCFMmp,$WCFMu;
 		?>
 		<div class="page_collapsible" id="wcfm_settings_location_head">
 			<label class="wcfmfa fa-globe"></label>
-			<?php _e('GMB Reviews', 'wc-frontend-manager'); ?><span></span>
+			<?php _e('GMB Reviews', 'wcfm-vendor-store-google-reviews'); ?><span></span>
 		</div>
 		<div class="wcfm-container wcfm_marketplace_store_location_settings">
 			<div id="wcfm_settings_form_store_location_expander" class="wcfm-content">
 				<div class="wcfm_clearfix"></div>
-				<div class="wcfm_vendor_settings_heading"><h2><?php _e( 'GMB Listings', 'wc-frontend-manager' ); ?></h2></div>
+				<div class="wcfm_vendor_settings_heading"><h2><?php _e( 'Google My Business Reviews Setting', 'wcfm-vendor-store-google-reviews' ); ?></h2></div>
 				<div class="wcfm_clearfix"></div>
 				<div class="store_address store_address_wrap">
 					<?php
@@ -193,11 +237,11 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 
 					?>
 
-					<p class="description">You can find your unique Place ID by searching by your business’ name in <a href="https://developers.google.com/places/place-id" class="components-external-link" target="_blank">Google’s Place ID Finder</a>. Single business locations are accepted; coverage areas are not accepted.</p>
+					<p class="description"><?php echo __("You can find your unique Place ID by searching by your business’ name in", "wcfm-vendor-store-google-reviews"); ?> <a href="https://developers.google.com/places/place-id" class="components-external-link" target="_blank">Google’s Place ID Finder</a>. <?php echo __("Single business locations are accepted; coverage areas are not accepted.","wcfm-vendor-store-google-reviews"); ?></p>
       
 					<div class="wcfm-lang-gr">
-						<p class="wcfm_google_review_lang wcfm_title lang_field"><strong>Retrieval Language</strong></p>
-						<label class="screen-reader-text" for="wcfm_google_review_lang">Retrieval Language</label>
+						<p class="wcfm_google_review_lang wcfm_title lang_field"><strong><?php echo __('Retrieval Language', "wcfm-vendor-store-google-reviews"); ?></strong></p>
+						<label class="screen-reader-text" for="wcfm_google_review_lang"><?php echo __('Retrieval Language', "wcfm-vendor-store-google-reviews"); ?></label>
 
 						<select name="wcfm_google_review_lang" class="wcfm-select wcfm_ele lang_field">
 							<?php
@@ -215,8 +259,6 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 						</select>
 					</div>
 					<?php
-
-					var_dump();
 
 					$WCFM->wcfm_fields->wcfm_generate_form_field(
 						array( 
@@ -238,8 +280,12 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 	}
 
 	
-
-
+	/**
+	 * This method is save Google My Business Reviews Setting fields infromation.
+	 *
+	 * @since    1.0.0
+	 * @param      array    $form_field_data    	submitted form array.
+	*/
 	public function place_id_save($form_field_data)
 	{
 		if (wcfm_is_vendor()) {
@@ -261,6 +307,12 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 		update_user_meta($user_id, 'ets_wcfm_gmb_reviews_api_key', $api_key);
 	}
 
+	/**
+	 * This method is create languag array.
+	 *
+	 * @since    1.0.0
+	 * @return      array   languag array with lang code.
+	*/
 	protected function languages()
 	{
 		return array(
