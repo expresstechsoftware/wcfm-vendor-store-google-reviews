@@ -48,4 +48,4 @@ msgstr ""
 
 #: wcfm-vendor-store-google-reviews-public-display:52
 msgid "Google Api Key"
-msgstr ""
+msgstr "" 

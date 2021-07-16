@@ -120,6 +120,5 @@ if($place_id) {
 		echo "<br>";
 		echo __("No Record Found","wcfm-vendor-store-google-reviews");
 	}
-
 	?>
 </div>
