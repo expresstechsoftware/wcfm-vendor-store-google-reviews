@@ -17,7 +17,7 @@
 <?php
 global $WCFM, $WCFMmp,$WCFMu;
 
-$place_id = $new_review_detail = $api_key = '';
+$place_id = $new_review_detail = $api_key = $total_review = $total_rate = $total_rate_star = '';
 $wcfm_store_url    = wcfm_get_option( 'wcfm_store_url', 'store' );
 $wcfm_store_name   = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
 
@@ -48,6 +48,11 @@ if($place_id) {
 	$new_review = file_get_contents($url);
 	$new_review_detail = json_decode($new_review);
 
+	$total_review = isset($new_review_detail->result->user_ratings_total) ? $new_review_detail->result->user_ratings_total : '';
+
+	$total_rate =  isset($new_review_detail->result->rating) ? $new_review_detail->result->rating : 0;
+	$total_rate_star =  $total_rate;
+
 	// Get Store name
 	$store_name = isset($new_review_detail->result->name) ? $new_review_detail->result->name : __('Google Reviews', "wcfm-vendor-store-google-reviews");
 
@@ -59,11 +64,22 @@ if($place_id) {
 	}
 
 }
-
 ?>
 <div class="wcfm-store-gr-wraper">
 	<h2><?php echo $store_name; ?></h2>
 	<span class="wcfm-store-gr-adr"><?php echo $address; ?></span>
+	<div class="wcfm-gr-total-rating">
+		<span class="wcfm-gr-total-rate"><?php echo $total_rate; ?></span>
+		
+		<ul>
+			<li><div class="wcfm-store-gr-stars">
+					<div class="wcfm-store-gr-percent" style="width: <?php echo $total_rate_star * 20; ?>%; "></div>
+				</div>
+			</li>
+		</ul>
+		<span><?php if($total_review) echo " ".$total_review. ' reviews' ; ?></span>
+	</div>
+
 	<?php 
 	if(isset($new_review_detail->result->reviews) && $new_review_detail->result->reviews) {
 		$reviews = $new_review_detail->result->reviews;
@@ -94,15 +110,12 @@ if($place_id) {
 
 					<div class="wcfm-g-review-star-rate-wrap">
 						<div class="wcfm-g-review-star-rate">
-							<?php
-							foreach (range(1, 5) as $key => $value) {
-								if($value <= $rating ){
-									echo '<span class="fa fa-star wcfm-star-checked"></span>';
-								} else {
-									echo '<span class="fa fa-star"></span>';
-								}
-							}
-							?>
+							<ul>
+								<li><div class="wcfm-store-gr-stars">
+										<div class="wcfm-store-gr-percent" style="width: <?php echo $rating * 20; ?>%; "></div>
+									</div>
+								</li>
+							</ul>
 						</div>
 						<div class="wcfm-g-r-rtv-time-des">
 							<span><?php echo $relative_time_des; ?></span>
@@ -120,5 +133,6 @@ if($place_id) {
 		echo "<br>";
 		echo __("No Record Found","wcfm-vendor-store-google-reviews");
 	}
+
 	?>
 </div>

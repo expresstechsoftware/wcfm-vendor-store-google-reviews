@@ -30,3 +30,47 @@
 	font-size: 15px;
 	font-family: initial;
 }
+
+
+
+
+
+
+
+.wcfm-store-gr-stars {
+    position: relative;
+    float: left;
+    font-size: 25pt;
+	  height: 1em;
+    line-height: 1em;
+}
+
+.wcfm-store-gr-stars:before {	
+    content: "\2606\2606\2606\2606\2606";
+    float: left;
+    z-index: 1;
+}
+
+.wcfm-store-gr-stars .wcfm-store-gr-percent {
+    position: absolute;
+    left: 0;
+    float: left;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.wcfm-store-gr-stars .wcfm-store-gr-percent:after {	
+    content: "\2605\2605\2605\2605\2605";
+    color: rgb(255, 200, 0);
+}
+
+.wcfm-gr-total-rating li {
+  /*display: table;*/
+}
+.wcfm-gr-total-rating {
+	display: flex;
+}
+
+.wcfm-gr-total-rate {
+	color: #E7711B;
+}
