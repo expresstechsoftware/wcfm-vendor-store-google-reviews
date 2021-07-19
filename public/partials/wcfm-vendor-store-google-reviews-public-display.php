@@ -62,7 +62,6 @@ if($place_id) {
 	if(!$address) {
 		$address = isset($new_review_detail->result->formatted_address) ? $new_review_detail->result->formatted_address : '';
 	}
-
 }
 ?>
 <div class="wcfm-store-gr-wraper">
