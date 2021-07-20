@@ -316,6 +316,7 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 	protected function languages()
 	{
 		return array(
+			'en' => 'English',
 			'af' => 'Afrikaans',
 			'sq' => 'Albanian',
 			'am' => 'Amharic',
@@ -337,7 +338,6 @@ class Wcfm_Vendor_Store_Google_Reviews_Public {
 			'cs' => 'Czech',
 			'da' => 'Danish',
 			'nl' => 'Dutch',
-			'en' => 'English',
 			'en-AU' => 'English (Australian)',
 			'en-GB' => 'English (Great Britain)',
 			'et' => 'Estonian',
