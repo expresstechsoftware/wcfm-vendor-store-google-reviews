@@ -42,21 +42,6 @@ define( 'WCFM_VENDOR_STORE_GOOGLE_REVIEWS_VERSION', '1.0.0' );
  * This action is documented in includes/class-wcfm-vendor-store-google-reviews-activator.php
  */
 function activate_wcfm_vendor_store_google_reviews() {
-
-	if (!is_dir(get_template_directory().'/wcfm')) {
-	    mkdir(get_template_directory().'/wcfm', 0777, true);
-	}
-	if (!is_dir(get_template_directory().'/wcfm/store')) {
-	    mkdir(get_template_directory().'/wcfm/store', 0777, true);
-	}
-	if (!is_dir(get_template_directory().'/wcfm/store/wcfmmp-view-store-google_reviews.php')) {
-		$content = "<?php 
-		echo do_shortcode('[google-reviews]'); ?>";
-		$fp = fopen(get_template_directory().'/wcfm/store/wcfmmp-view-store-google_reviews.php',"wb");
-		fwrite($fp,$content);
-		fclose($fp);
-	}
-
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcfm-vendor-store-google-reviews-activator.php';
 	Wcfm_Vendor_Store_Google_Reviews_Activator::activate();
 }

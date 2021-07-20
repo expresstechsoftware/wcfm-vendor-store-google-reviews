@@ -17,7 +17,7 @@
 <?php
 global $WCFM, $WCFMmp,$WCFMu;
 
-$place_id = $new_review_detail = $api_key = $total_review = $total_rate = $total_rate_star = '';
+$place_id = $new_review_detail = $api_key = $total_review = $total_rate = $total_rate_star = $review_link = '';
 $wcfm_store_url    = wcfm_get_option( 'wcfm_store_url', 'store' );
 $wcfm_store_name   = apply_filters( 'wcfmmp_store_query_var', get_query_var( $wcfm_store_url ) );
 
@@ -49,6 +49,8 @@ if($place_id) {
 	$new_review_detail = json_decode($new_review);
 
 	$total_review = isset($new_review_detail->result->user_ratings_total) ? $new_review_detail->result->user_ratings_total : '';
+	
+	$review_link = 	$total_review ? ' <a href="https://search.google.com/local/reviews?placeid='.$place_id.'">'.$total_review. ' reviews</a>' : '';
 
 	$total_rate =  isset($new_review_detail->result->rating) ? $new_review_detail->result->rating : 0;
 	$total_rate_star =  $total_rate;
@@ -76,7 +78,7 @@ if($place_id) {
 				</div>
 			</li>
 		</ul>
-		<span><?php if($total_review) echo " ".$total_review. ' reviews' ; ?></span>
+		<span class=""><?php if($total_review) echo $review_link; ?></span>
 	</div>
 
 	<?php 
