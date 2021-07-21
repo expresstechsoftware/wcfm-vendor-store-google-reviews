@@ -1,13 +1,6 @@
 <?php
-
 /**
  * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
  * @link              https://www.expresstechsoftwares.com
  * @since             1.0.0
  * @package           Wcfm_Vendor_Store_Google_Reviews
@@ -32,14 +25,11 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
  */
 define( 'WCFM_VENDOR_STORE_GOOGLE_REVIEWS_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-wcfm-vendor-store-google-reviews-activator.php
  */
 function activate_wcfm_vendor_store_google_reviews() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcfm-vendor-store-google-reviews-activator.php';
@@ -48,7 +38,6 @@ function activate_wcfm_vendor_store_google_reviews() {
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-wcfm-vendor-store-google-reviews-deactivator.php
  */
 function deactivate_wcfm_vendor_store_google_reviews() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wcfm-vendor-store-google-reviews-deactivator.php';

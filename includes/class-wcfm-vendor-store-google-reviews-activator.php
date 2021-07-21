@@ -1,19 +1,7 @@
 <?php
-
-/**
- * Fired during plugin activation
- *
- * @link       https://www.expresstechsoftwares.com
- * @since      1.0.0
- *
- * @package    Wcfm_Vendor_Store_Google_Reviews
- * @subpackage Wcfm_Vendor_Store_Google_Reviews/includes
- */
-
 /**
  * Fired during plugin activation.
  *
- * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
  * @package    Wcfm_Vendor_Store_Google_Reviews
@@ -30,18 +18,18 @@ class Wcfm_Vendor_Store_Google_Reviews_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		if (!is_dir(get_template_directory().'/wcfm')) {
-		    mkdir(get_template_directory().'/wcfm', 0777, true);
+		if ( ! is_dir( get_template_directory() . '/wcfm' ) ) {
+			mkdir( get_template_directory() . '/wcfm', 0777, true );
 		}
-		if (!is_dir(get_template_directory().'/wcfm/store')) {
-		    mkdir(get_template_directory().'/wcfm/store', 0777, true);
+		if ( ! is_dir( get_template_directory() . '/wcfm/store' ) ) {
+			mkdir( get_template_directory() . '/wcfm/store', 0777, true );
 		}
-		if (!is_dir(get_template_directory().'/wcfm/store/wcfmmp-view-store-google_reviews.php')) {
+		if ( ! is_dir( get_template_directory() . '/wcfm/store/wcfmmp-view-store-google_reviews.php' ) ) {
 			$content = "<?php 
 			echo do_shortcode('[google-reviews]'); ?>";
-			$fp = fopen(get_template_directory().'/wcfm/store/wcfmmp-view-store-google_reviews.php',"wb");
-			fwrite($fp,$content);
-			fclose($fp);
+			$fp      = fopen( get_template_directory() . '/wcfm/store/wcfmmp-view-store-google_reviews.php', 'wb' );
+			fwrite( $fp, $content );
+			fclose( $fp );
 		}
 	}
 
