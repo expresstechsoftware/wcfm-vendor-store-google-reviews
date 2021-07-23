@@ -126,6 +126,11 @@ if($place_id) {
 			<?php
 			
 		} ?>
+			 
+			<p class="attribution">
+				<span class="wcfm-gr-powered-by-google" title="Powered by Google"></span>
+			</p>
+			 
 		</div>
 		<?php
 	} else {
