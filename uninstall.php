@@ -22,3 +22,9 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+
+// drop plugin collect data
+global $wpdb;
+$sql = "DELETE FROM {$wpdb->prefix}usermeta WHERE `meta_key` IN ('wcfm_google_review_place_id', 'ets_wcfm_gmb_reviews_api_key')";
+$wpdb->query($sql);
